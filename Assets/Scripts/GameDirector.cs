@@ -15,6 +15,8 @@ public class GameDirector : MonoBehaviour
 
     private int phase = 0;
 
+    private float actualTime;
+
     private bool winningCutscene = true;
 
     void Awake()
@@ -44,9 +46,33 @@ public class GameDirector : MonoBehaviour
     {
         phase++;
 
-        float actualTime = audioSource.time;
+        actualTime = audioSource.time;
         audioSource.Stop();
 
+        if(phase == 1)
+        {
+            audioSource.clip = songs[phase - 1];
+            
+        }
+        else if(phase == 2)
+        {
+            audioSource.clip = songs[phase - 1];
+        }
+
+        audioSource.time = actualTime;
+        audioSource.Play();
+    }
+
+    public void StopMusicBeforePowerUp()
+    {
+        phase++;
+
+        actualTime = audioSource.time;
+        audioSource.Stop();
+    }
+
+    public void ResumeMusicAfterPowerUp()
+    {
         if(phase == 1)
         {
             audioSource.clip = songs[phase - 1];
