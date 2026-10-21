@@ -16,6 +16,7 @@ public class PlayerSounds : MonoBehaviour
 
     public void PlayAudioClip(int clip)
     {
+        Debug.Log("Sound played: " + clip);
         audioSource.Stop();
         audioSource.clip = clips[clip];
         audioSource.Play();

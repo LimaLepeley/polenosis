@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(SpriteRenderer))]
@@ -26,6 +27,14 @@ public class PlayerAbilities : MonoBehaviour
     private float camouflageCooldown = 10f;
     [SerializeField]
     private float camouflageCooldownTimer = 0f;
+    [SerializeField]
+    private Animator animator;
+    [SerializeField]
+    private Image opalPin;
+    [SerializeField]
+    private Image lagunaPin;
+    [SerializeField]
+    private Sprite[] pinSprites; //0 laguna, 1 opal
     // Start is called before the first frame update
     void Awake()
     {
@@ -49,6 +58,7 @@ public class PlayerAbilities : MonoBehaviour
                 else
                 {
                     canCamouflage = true;
+                    opalPin.sprite = pinSprites[1];
                     playerSounds.PlayAudioClip(2);
                     camouflageCooldownTimer = 0f;
                 }
@@ -86,11 +96,14 @@ public class PlayerAbilities : MonoBehaviour
         {
             case 1:
                 playerMovement.SetDoubleJumpUnlocked(true);
+                lagunaPin.gameObject.SetActive(true);
                 break;
             case 2:
                 camouflageUnlocked = true;
-                camouflageCooldownTimer = camouflageCooldown;
+                camouflageCooldownTimer = 0;
                 canCamouflage = true;
+                opalPin.gameObject.SetActive(true);
+                opalPin.sprite = pinSprites[1];
                 break;
             default:
                 break;
@@ -103,7 +116,10 @@ public class PlayerAbilities : MonoBehaviour
         {
             canCamouflage = false;
             isCamouflageActive = true;
+            animator.gameObject.SetActive(true);
+            animator.Play("Camouflage",0,0f);
             camouflageTimer = 0f;
+            opalPin.sprite = pinSprites[0];
             playerSpriteRenderer.color = new Color(1f, 1f, 1f, 0.15f);
         }
     }

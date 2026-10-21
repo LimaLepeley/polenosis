@@ -40,10 +40,21 @@ public class PlayerMovement : MonoBehaviour
     private bool isMovingHorizontal = false;
 
     private float sightTimer;
-    private float timeToEnableSight = 1f;
+    private float timeToEnableSight = 0.5f;
     private bool sightingUp;
     private bool sightingDown;
 
+    [SerializeField]
+    private Animator animator;
+    [SerializeField]
+    private SpriteRenderer lagunaSprite;
+    [SerializeField]
+    private Transform lagunaTransform;
+
+    [SerializeField]
+    private Transform l1;
+    [SerializeField]
+    private Transform l2;
 
     //Input del jugador
     private Vector2 moveInput;
@@ -92,10 +103,15 @@ public class PlayerMovement : MonoBehaviour
         if(moveInput == Vector2.right)
         {
             playerAnimation.FlipSprite(false);
+            lagunaSprite.flipX = false;
+            lagunaTransform = l1;
+            
         }
         else if(moveInput == Vector2.left)
         {
             playerAnimation.FlipSprite(true);
+            lagunaSprite.flipX = true;
+            lagunaTransform = l2;
         }
 
         if(rb.velocity == Vector2.zero)
@@ -111,7 +127,7 @@ public class PlayerMovement : MonoBehaviour
                 sightingUp = true;
                 if(sightTimer >= timeToEnableSight)
                 {
-                    cameraFollow.SetYOffset(4.5f);
+                    cameraFollow.SetYOffset(5.5f);
                 }
                 else
                 {
@@ -129,7 +145,7 @@ public class PlayerMovement : MonoBehaviour
                 sightingDown = true;
                 if(sightTimer >= timeToEnableSight)
                 {
-                    cameraFollow.SetYOffset(0.5f);
+                    cameraFollow.SetYOffset(-0.5f);
                 }
                 else
                 {
@@ -236,6 +252,8 @@ public class PlayerMovement : MonoBehaviour
         {
             AddVerticalForce(jumpForce);
             playerSounds.PlayAudioClip(1);
+            animator.gameObject.SetActive(true);
+            animator.Play("Laguna",0,0f);
             canDoubleJump = false;
         }
     }
